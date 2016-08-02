@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -15,6 +17,7 @@ public class HangManMain {
 		char[] randomWordByCharacters = randomWord.toCharArray();
 		char[] playersCorrectGuesses = new char[randomWord.length()];
 		char under = '_';
+		int playersbadGuesses = 0;
 
 		for (int i = 0; i < randomWord.length(); i++) {
 			playersCorrectGuesses[i] = under;
@@ -26,25 +29,35 @@ public class HangManMain {
 		do {
 			System.out.println("Enter character");
 			char playersGuess = new ReadLine().readLine().toLowerCase().charAt(0);
-
+			boolean wasPlayersCharCorrect = false;
+			System.out.println();
+			
 			for (int i = 0; i < randomWord.length(); i++) {
 				if (randomWordByCharacters[i] == playersGuess) {
-					System.out.println("Good one.");
-					System.out.println(randomWordByCharacters);
 					playersCorrectGuesses[i] = randomWordByCharacters[i];
-					System.out.println(playersCorrectGuesses);
-
-				} else {
-					System.out.println("Wrong guess.");
+					wasPlayersCharCorrect = true;
 				}
 			}
+			System.out.println(playersCorrectGuesses);
 
-		} while (!isGuessed());
+			if(wasPlayersCharCorrect){
+				System.out.println("Good one.");
+			} else {
+				System.out.println("Bad one. Try again.");
+				System.out.println(++playersbadGuesses);
+			}
+			
+			if(Arrays.equals(randomWordByCharacters, playersCorrectGuesses)){
+				System.out.println("Congratulation, you WON!!!");
+				break;
+			}
 
-	}
+		} while (playersbadGuesses<8);
+		
+			if(playersbadGuesses==8){
+				System.out.println("HaHa! You lost. Maybe next time. :)");
+			}
 
-	private static boolean isGuessed() {
-		return false;
 	}
 
 	public String getRandomWord() throws IOException {
